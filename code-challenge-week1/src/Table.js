@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const ExpenseTracker = () => {
+function ExpenseTracker() {
   const [expenses, setExpenses] = useState([]);
   const [inputData, setInputData] = useState({
     date: '',
@@ -8,10 +8,9 @@ const ExpenseTracker = () => {
     category: '',
     amount: '',
   });
-  const [searchDate, setSearchDate] = useState('');
+  const [searchDescription, setSearchDescription] = useState('');
 
   useEffect(() => {
-    // Fetch data from the server when the component mounts
     fetch('http://localhost:8001/transactions')
       .then((response) => response.json())
       .then((data) => setExpenses(data))
@@ -23,7 +22,6 @@ const ExpenseTracker = () => {
   };
 
   const handleAddExpense = () => {
-    // Send a POST request to add a new expense to the server
     fetch('http://localhost:8001/transactions', {
       method: 'POST',
       headers: {
@@ -46,14 +44,13 @@ const ExpenseTracker = () => {
 
   const handleSearch = () => {
     // Filter expenses based on the searchDate
-    fetch(`http://localhost:8001/transactions?date_like=${searchDate}`)
+    fetch(`http://localhost:8001/transactions?description_like=${searchDescription}`)
       .then((response) => response.json())
       .then((data) => setExpenses(data))
       .catch((error) => console.error('Error searching data:', error));
   };
 
   const handleDeleteExpense = (index) => {
-    // Send a DELETE request to remove the expense from the server
     const expenseToDelete = expenses[index];
     fetch(`http://localhost:8001/transactions/${expenseToDelete.id}`, {
       method: 'DELETE',
@@ -70,11 +67,11 @@ const ExpenseTracker = () => {
     <div className='wholepage'>
       <h1 className='title'>Expense Tracker</h1>
       <div className='search'>
-        <label>Search by Date:</label>
+        <label>Search by Description:</label>
         <input
           type="text"
-          value={searchDate}
-          onChange={(e) => setSearchDate(e.target.value)}
+          value={searchDescription}
+          onChange={(e) => setSearchDescription(e.target.value)}
         />
         <button onClick={handleSearch}>Search</button>
       </div>

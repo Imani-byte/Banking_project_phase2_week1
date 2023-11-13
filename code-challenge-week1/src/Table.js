@@ -43,7 +43,6 @@ function ExpenseTracker() {
   };
 
   const handleSearch = () => {
-    // Filter expenses based on the searchDate
     fetch(`http://localhost:8001/transactions?description_like=${searchDescription}`)
       .then((response) => response.json())
       .then((data) => setExpenses(data))
